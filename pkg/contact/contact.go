@@ -1,4 +1,4 @@
-package user
+package contact
 
 import (
 	"encoding/json"
@@ -8,7 +8,7 @@ import (
 	"github.com/larlandis/ddd-example/pkg/restclient"
 )
 
-func getUser(c *gin.Context, userID string) (*User, error) {
+func getContact(c *gin.Context, userID string) (*Contact, error) {
 	// Get user mail and nickname
 	userFromAPI, err := userByID(userID)
 	if err != nil {
@@ -30,15 +30,15 @@ func getUser(c *gin.Context, userID string) (*User, error) {
 		))
 	}
 
-	// Make user object
-	user := &User{
+	// Make contact object
+	contact := &Contact{
 		UserID:    userID,
 		UserName:  userFromAPI.NickName,
 		Email:     userFromAPI.Email,
 		Addresses: addresses,
 	}
 
-	return user, nil
+	return contact, nil
 }
 
 func userByID(userID string) (*userApiResponse, error) {

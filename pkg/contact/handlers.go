@@ -1,4 +1,4 @@
-package user
+package contact
 
 import (
 	"encoding/json"
@@ -8,12 +8,12 @@ import (
 )
 
 // HandlerGetUser get user info
-func HandlerGetUser(c *gin.Context) {
+func HandlerGetContact(c *gin.Context) {
 	// Parse userID from params
 	userID := c.Param("userID")
 
 	// get user object
-	user, err := getUser(c, userID)
+	user, err := getContact(c, userID)
 	if err != nil {
 		c.AbortWithError(http.StatusInternalServerError, err)
 		return
