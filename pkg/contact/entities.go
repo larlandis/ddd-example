@@ -7,3 +7,9 @@ type Contact struct {
 	Email     string   `json:"email"`
 	Addresses []string `json:"address,omitempty"`
 }
+
+// User entity
+type User struct {
+	Name  string
+	Email string
+}

@@ -4,11 +4,19 @@ import (
 	"encoding/json"
 	"fmt"
 
+	"github.com/larlandis/ddd-example/pkg/contact"
 	"github.com/larlandis/ddd-example/pkg/restclient"
 )
 
+type userRepo struct{}
+
+// NewRepo creates and returns new user repository
+func NewRepo() contact.UserRepo {
+	return &userRepo{}
+}
+
 // ByID returns user info by userID
-func ByID(userID string) (*user, error) {
+func (*userRepo) ByID(userID string) (*contact.User, error) {
 
 	// Use new restclient
 	rest := restclient.NewRestClient("http://api.internal.ml.com")
@@ -25,5 +33,8 @@ func ByID(userID string) (*user, error) {
 	if err := json.Unmarshal(bytes, &userFromAPI); err != nil {
 		return nil, err
 	}
-	return userFromAPI, nil
+	return &contact.User{
+		Name:  userFromAPI.NickName,
+		Email: userFromAPI.Email,
+	}, nil
 }
