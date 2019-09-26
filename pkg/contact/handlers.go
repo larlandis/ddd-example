@@ -8,13 +8,13 @@ import (
 )
 
 // HandlerGetContact get contact info
-func HandlerGetContact(userRepo UserRepo) func(*gin.Context) {
+func HandlerGetContact(userRepo UserRepo, addressRepo AddressRepo) func(*gin.Context) {
 	return func(c *gin.Context) {
 		// Parse userID from params
 		userID := c.Param("userID")
 
 		// serv := newContactService(user.NewRepo())
-		serv := newContactService(userRepo)
+		serv := newContactService(userRepo, addressRepo)
 
 		// get contact object
 		contact, err := serv.getContact(c, userID)

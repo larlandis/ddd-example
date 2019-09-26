@@ -1,10 +1,7 @@
 package contact
 
 import (
-	"fmt"
-
 	"github.com/gin-gonic/gin"
-	"github.com/larlandis/ddd-example/pkg/repository/address"
 )
 
 // UserRepo defines behaviour of user repository
@@ -12,8 +9,14 @@ type UserRepo interface {
 	ByID(userID string) (*User, error)
 }
 
+// AddressRepo defines behaviour of address repository
+type AddressRepo interface {
+	ByID(userID string) ([]string, error)
+}
+
 type contactService struct {
-	userRepo UserRepo
+	userRepo    UserRepo
+	addressRepo AddressRepo
 }
 
 func (serv contactService) getContact(c *gin.Context, userID string) (*Contact, error) {
@@ -24,18 +27,9 @@ func (serv contactService) getContact(c *gin.Context, userID string) (*Contact, 
 	}
 
 	// Get addresses
-	addressesFromAPI, err := address.ByID(userID)
+	addresses, err := serv.addressRepo.ByID(userID)
 	if err != nil {
 		return nil, err
-	}
-	var addresses []string
-	for _, ad := range addressesFromAPI {
-		addresses = append(addresses, fmt.Sprintf(
-			"%s, %s, %s",
-			ad.Street,
-			ad.City.Name,
-			ad.Country.Name,
-		))
 	}
 
 	// Make contact object
@@ -49,8 +43,9 @@ func (serv contactService) getContact(c *gin.Context, userID string) (*Contact, 
 	return contact, nil
 }
 
-func newContactService(uRepo UserRepo) *contactService {
+func newContactService(uRepo UserRepo, aRepo AddressRepo) *contactService {
 	return &contactService{
-		userRepo: uRepo,
+		userRepo:    uRepo,
+		addressRepo: aRepo,
 	}
 }
