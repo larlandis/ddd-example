@@ -7,20 +7,20 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-// HandlerGetUser get user info
+// HandlerGetContact get contact info
 func HandlerGetContact(c *gin.Context) {
 	// Parse userID from params
 	userID := c.Param("userID")
 
 	// get user object
-	user, err := getContact(c, userID)
+	contact, err := getContact(c, userID)
 	if err != nil {
 		c.AbortWithError(http.StatusInternalServerError, err)
 		return
 	}
 
 	// Prepare json response
-	r, err := json.Marshal(user)
+	r, err := json.Marshal(contact)
 	if err != nil {
 		c.AbortWithError(http.StatusInternalServerError, err)
 		return
