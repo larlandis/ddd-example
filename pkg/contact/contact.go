@@ -1,8 +1,9 @@
 package contact
 
-import (
-	"github.com/gin-gonic/gin"
-)
+//Service defines the interface of contact functionality
+type Service interface {
+	GetContact(userID string) (*Contact, error)
+}
 
 // UserRepo defines behaviour of user repository
 type UserRepo interface {
@@ -14,12 +15,12 @@ type AddressRepo interface {
 	ByID(userID string) ([]string, error)
 }
 
-type contactService struct {
+type service struct {
 	userRepo    UserRepo
 	addressRepo AddressRepo
 }
 
-func (serv contactService) getContact(c *gin.Context, userID string) (*Contact, error) {
+func (serv service) GetContact(userID string) (*Contact, error) {
 	// Get mail and nickname
 	user, err := serv.userRepo.ByID(userID)
 	if err != nil {
@@ -43,8 +44,9 @@ func (serv contactService) getContact(c *gin.Context, userID string) (*Contact, 
 	return contact, nil
 }
 
-func newContactService(uRepo UserRepo, aRepo AddressRepo) *contactService {
-	return &contactService{
+// NewService returns contact service implementation
+func NewService(uRepo UserRepo, aRepo AddressRepo) Service {
+	return &service{
 		userRepo:    uRepo,
 		addressRepo: aRepo,
 	}
