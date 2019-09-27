@@ -2,6 +2,10 @@
   name = "github.com/gin-gonic/gin"
   version = "1.4.0"
 
+[[constraint]]
+  name = "github.com/olekukonko/tablewriter"
+  branch = "master"
+
 [prune]
   go-tests = true
   unused-packages = true

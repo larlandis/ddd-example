@@ -1,8 +1,8 @@
 package main
 
 import (
+	"github.com/larlandis/ddd-example/cmd"
 	"github.com/larlandis/ddd-example/pkg/contact"
-	"github.com/larlandis/ddd-example/pkg/httpserver"
 	"github.com/larlandis/ddd-example/pkg/repository/address"
 	"github.com/larlandis/ddd-example/pkg/repository/user"
 )
@@ -17,9 +17,12 @@ func main() {
 	// Init services
 	contactServ := contact.NewService(userRepo, addressRepo)
 
-	server := httpserver.New(contactServ)
-	server.Init()
-	server.RegisterRoutes("ddd-example")
-	server.Run()
+	// server := httpserver.New(contactServ)
+	// server.Init()
+	// server.RegisterRoutes("ddd-example")
+	// server.Run()
+
+	cli := cmd.NewCLI(contactServ)
+	cli.Run()
 
 }
